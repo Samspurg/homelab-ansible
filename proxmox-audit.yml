@@ -1,32 +1,39 @@
+
+---
 - name: Read-only Proxmox host audit
   hosts: proxmox
   gather_facts: true
 
-tasks:
-- name: Collect Proxmox version
-ansible.builtin.command: pveversion -v
-register: pve_version
-changed_when: false
-- name: Collect cluster status
-ansible.builtin.command: pvecm status
-register: cluster_status
-changed_when: false
-failed_when: false
-- name: Collect storage status
-ansible.builtin.command: pvesm status
-register: storage_status
-changed_when: false
-failed_when: false
-- name: List failed systemd units
-ansible.builtin.command: systemctl --failed --no-legend --plain
-register: failed_units
-changed_when: false
-failed_when: false
-- name: Check root filesystem space
-ansible.builtin.command: df -h /
-register: root_disk
-changed_when: false
-- name: Display host audit
+  tasks:
+    - name: Collect Proxmox version
+      ansible.builtin.command: pveversion -v
+      register: pve_version
+      changed_when: false
+
+    - name: Collect cluster status
+      ansible.builtin.command: pvecm status
+      register: cluster_status
+      changed_when: false
+      failed_when: false
+
+    - name: Collect storage status
+      ansible.builtin.command: pvesm status
+      register: storage_status
+      changed_when: false
+      failed_when: false
+
+    - name: List failed systemd units
+      ansible.builtin.command: systemctl --failed --no-legend --plain
+      register: failed_units
+      changed_when: false
+      failed_when: false
+
+    - name: Check root filesystem space
+      ansible.builtin.command: df -h /
+      register: root_disk
+      changed_when: false
+
+    - name: Display host audit
       ansible.builtin.debug:
         msg:
           - "=== {{ inventory_hostname }} ({{ ansible_host | default(inventory_hostname) }}) ==="
