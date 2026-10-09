@@ -1,7 +1,7 @@
 
 ---
 - name: Read-only Proxmox host audit
-  hosts: proxmox
+  hosts: Proxmox
   gather_facts: true
 
   tasks:
