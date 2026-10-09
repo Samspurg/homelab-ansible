@@ -1,0 +1,9 @@
+
+---
+- name: Test connectivity to my K3s nodes
+  hosts: k3s
+  gather_facts: false
+
+  tasks:
+    - name: Verify Ansible can connect
+      ansible.builtin.ping:
