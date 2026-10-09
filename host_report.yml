@@ -1,0 +1,18 @@
+
+---
+- name: Report basic information about K3s nodes
+  hosts: k3s
+  gather_facts: true
+
+  tasks:
+    - name: Display host report
+      ansible.builtin.debug:
+        msg:
+          - "Host: {{ inventory_hostname }}"
+          - "OS: {{ ansible_distribution }} {{ ansible_distribution_version }}"
+          - "Kernel: {{ ansible_kernel }}"
+          - "Architecture: {{ ansible_architecture }}"
+          - "vCPUs: {{ ansible_processor_vcpus }}"
+          - "Memory: {{ ansible_memtotal_mb }} MiB"
+          - "Uptime: {{ (ansible_uptime_seconds / 3600) | int }} hours"
+          - "Root filesystem: {{ ansible_mounts | selectattr('mount', 'equalto', '/') | map(attribute='size_available') | first | default(0) | human_readable(binary=true) }} free"
